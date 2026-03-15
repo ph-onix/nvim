@@ -272,6 +272,11 @@ require("lazy").setup({
                     -- Jump to the type of the word under your cursor.
                     map("grt", require("telescope.builtin").lsp_type_definitions, "[G]oto [T]ype Definition")
 
+                    -- Hover documentation with rounded border.
+                    map("K", function()
+                        vim.lsp.buf.hover({ border = "rounded" })
+                    end, "Hover")
+
                     ---@param client vim.lsp.Client
                     ---@param method vim.lsp.protocol.Method
                     ---@param bufnr? integer some lsp support methods only in specific files
@@ -384,11 +389,12 @@ require("lazy").setup({
             keymap = {
                 preset = "default",
             },
-
             appearance = {
                 nerd_font_variant = "mono",
             },
-
+            completion = {
+                menu = { border = "rounded" },
+            },
             sources = {
                 default = { "lsp", "path", "snippets", "lazydev" },
                 providers = {
