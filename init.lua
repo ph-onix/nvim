@@ -297,12 +297,15 @@ require("lazy").setup({
             })
             local capabilities = require("blink.cmp").get_lsp_capabilities()
             local servers = {
-                basedpyright = {
-                    analysis = {
-                        typeCheckingMode = "off",
-                        inlayHints = { genericTypes = true, variableTypes = true, functionReturnTypes = true },
-                    },
-                },
+                -- basedpyright = {
+                --     settings = {
+                --         basedpyright = {
+                --             analysis = {
+                --                 typeCheckingMode = "off",
+                --             },
+                --         },
+                --     },
+                -- },
 
                 lua_ls = {
                     settings = {
@@ -395,7 +398,10 @@ require("lazy").setup({
                 menu = { border = "rounded" },
             },
             sources = {
-                default = { "lsp", "path", "snippets", "lazydev" },
+                default = { "lsp", "path", "lazydev" },
+                per_filetype = {
+                    python = { "buffer" },
+                },
                 providers = {
                     lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
                 },
