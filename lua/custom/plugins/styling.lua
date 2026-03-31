@@ -9,7 +9,7 @@ return {
                 tweak_color = { lack = "#789978" },
                 tweak_highlight = { ["@comment"] = { overwrite = false, italic = true } },
             })
-            vim.cmd.colorscheme("lackluster-hack")
+            vim.cmd.colorscheme("lackluster")
 
             -- Dark auto complete
             vim.api.nvim_set_hl(0, "Pmenu", { bg = "NONE" })
