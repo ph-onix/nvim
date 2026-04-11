@@ -400,9 +400,6 @@ require("lazy").setup({
             },
             sources = {
                 default = { "lsp", "path", "lazydev" },
-                per_filetype = {
-                    python = { "buffer" },
-                },
                 providers = {
                     lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
                 },
