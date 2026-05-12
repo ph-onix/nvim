@@ -1,5 +1,19 @@
 return {
     {
+        "stevearc/oil.nvim",
+        ---@module 'oil'
+        ---@type oil.SetupOpts
+        opts = {
+            keymaps = {
+                ["<CR>"] = "actions.select",
+                ["<C-c>"] = { "actions.close", mode = "n" },
+                ["."] = { "actions.toggle_hidden", mode = "n" },
+            },
+            use_default_keymaps = false,
+        },
+        lazy = false,
+    },
+    {
         "MeanderingProgrammer/render-markdown.nvim",
         dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" },
         ---@module 'render-markdown'

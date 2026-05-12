@@ -1,19 +1,5 @@
 return {
     {
-        "stevearc/oil.nvim",
-        ---@module 'oil'
-        ---@type oil.SetupOpts
-        opts = {
-            keymaps = {
-                ["<CR>"] = "actions.select",
-                ["<C-c>"] = { "actions.close", mode = "n" },
-                ["."] = { "actions.toggle_hidden", mode = "n" },
-            },
-            use_default_keymaps = false,
-        },
-        lazy = false,
-    },
-    {
         "folke/flash.nvim",
         event = "VeryLazy",
         ---@type Flash.Config
