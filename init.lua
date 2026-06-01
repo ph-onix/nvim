@@ -435,6 +435,14 @@ require("lazy").setup({
             local statusline = require("mini.statusline")
             statusline.setup({ use_icons = vim.g.have_nerd_font })
 
+            -- Always show the built-in short mode label (N, I, V, V-L, ...) by
+            -- forcing mini's truncated path regardless of window width.
+            local orig_section_mode = statusline.section_mode
+            ---@diagnostic disable-next-line: duplicate-set-field
+            statusline.section_mode = function()
+                return orig_section_mode({ trunc_width = math.huge })
+            end
+
             ---@diagnostic disable-next-line: duplicate-set-field
             statusline.section_location = function()
                 return "%2l:%-2v"
@@ -488,7 +496,19 @@ require("lazy").setup({
         main = "nvim-treesitter.config", -- Sets main module to use for opts
         -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
         opts = {
-            ensure_installed = { "bash", "c", "diff", "lua", "luadoc", "markdown", "markdown_inline", "query", "vim", "vimdoc", "python" },
+            ensure_installed = {
+                "bash",
+                "c",
+                "diff",
+                "lua",
+                "luadoc",
+                "markdown",
+                "markdown_inline",
+                "query",
+                "vim",
+                "vimdoc",
+                "python",
+            },
             auto_install = true,
             highlight = {
                 enable = true,

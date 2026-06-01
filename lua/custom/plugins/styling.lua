@@ -5,8 +5,12 @@ return {
         priority = 1000,
         init = function()
             local lackluster = require("lackluster")
+            local lackluster_color = require("lackluster.color")
             lackluster.setup({
-                tweak_color = { lack = "#789978" },
+                tweak_color = {
+                    lack = lackluster_color.green,
+                    blue = lackluster_color.green,
+                },
                 tweak_highlight = { ["@comment"] = { overwrite = false, italic = true } },
             })
             vim.cmd.colorscheme("lackluster")
