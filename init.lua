@@ -42,12 +42,16 @@ vim.o.inccommand = "split"
 
 -- [[ Basic Keymaps ]]
 
-local prev_cmd = ""
+local cached_prev_cmd = ""
 local shell_buf = nil
-local function shell_prompt()
+local function shell_prompt(prev_cmd)
     vim.ui.input({ prompt = " ❯ ", completion = "shellcmdline", default = prev_cmd }, function(cmd)
         if not cmd or cmd == "" then
             if cmd == "" and shell_buf and vim.api.nvim_buf_is_valid(shell_buf) then
+                local win = vim.fn.bufwinid(shell_buf)
+                if win ~= -1 then
+                    vim.api.nvim_win_close(win, true)
+                end
                 vim.api.nvim_buf_delete(shell_buf, { force = true })
                 shell_buf = nil
             end
@@ -66,11 +70,14 @@ local function shell_prompt()
         end
         vim.cmd("redraw")
         vim.cmd("normal! gg")
+        cached_prev_cmd = cmd
         vim.schedule(shell_prompt)
     end)
 end
 
-vim.keymap.set("n", "<leader>;", shell_prompt, { desc = "Quick shell comand" })
+vim.keymap.set("n", "<leader>;", function()
+    shell_prompt(cached_prev_cmd)
+end, { desc = "Quick shell comand" })
 
 --  See `:help vim.keymap.set()`
 vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Open parent directory" })
