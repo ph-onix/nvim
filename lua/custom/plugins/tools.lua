@@ -210,6 +210,14 @@ return {
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = "markdown",
                 callback = function()
+                    -- Skip floating windows (LSP hover, diagnostics, completion
+                    -- docs). They set filetype=markdown too, but should keep the
+                    -- uniform NormalFloat background instead of
+                    -- RenderMarkdownNormal's darker editor bg, which produced a
+                    -- two-tone hover look.
+                    if vim.api.nvim_win_get_config(0).relative ~= "" then
+                        return
+                    end
                     vim.wo.winhighlight = "Normal:RenderMarkdownNormal"
                 end,
                 desc = "Brighten plain markdown prose to gray9",
