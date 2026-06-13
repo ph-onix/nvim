@@ -42,7 +42,35 @@ vim.o.inccommand = "split"
 
 -- [[ Basic Keymaps ]]
 
-vim.keymap.set("n", "<leader>;", ":!", { desc = "Quick shell command" })
+local prev_cmd = ""
+local shell_buf = nil
+local function shell_prompt()
+    vim.ui.input({ prompt = " ❯ ", completion = "shellcmdline", default = prev_cmd }, function(cmd)
+        if not cmd or cmd == "" then
+            if cmd == "" and shell_buf and vim.api.nvim_buf_is_valid(shell_buf) then
+                vim.api.nvim_buf_delete(shell_buf, { force = true })
+                shell_buf = nil
+            end
+            return
+        end
+        if not (shell_buf and vim.api.nvim_buf_is_valid(shell_buf)) then
+            shell_buf = vim.api.nvim_create_buf(false, true)
+        end
+
+        local result = vim.fn.systemlist(cmd)
+        vim.api.nvim_buf_set_lines(shell_buf, 0, -1, false, result)
+        local win = vim.fn.bufwinid(shell_buf)
+        if win == -1 then
+            vim.cmd("split")
+            vim.api.nvim_set_current_buf(shell_buf)
+        end
+        vim.cmd("redraw")
+        vim.cmd("normal! gg")
+        vim.schedule(shell_prompt)
+    end)
+end
+
+vim.keymap.set("n", "<leader>;", shell_prompt, { desc = "Quick shell comand" })
 
 --  See `:help vim.keymap.set()`
 vim.keymap.set("n", "<leader>e", "<CMD>Oil<CR>", { desc = "Open parent directory" })
@@ -370,6 +398,7 @@ require("lazy").setup({
                 python = { "ruff_format", "ruff_fix" },
                 json = { "jq" },
                 sql = { "pg_format" },
+                ocaml = { "ocamlformat" },
             },
             formatters = { jq = { args = { "--indent", "2" } } },
         },

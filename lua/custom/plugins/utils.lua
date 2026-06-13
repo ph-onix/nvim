@@ -53,6 +53,7 @@ return {
             npairs.setup({})
             npairs.clear_rules()
             npairs.add_rule(Rule("{", "}"))
+            npairs.add_rule(Rule("$", "$"))
         end,
     },
 }
